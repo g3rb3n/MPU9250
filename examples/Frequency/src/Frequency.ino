@@ -1,8 +1,8 @@
 #include <Arduino.h>
 
-#include "../src/MPU9250.h"
-#include "MPU9250_registers.h"
-#include "MPU9250_register_masks.h"
+#include "../../../src/MPU9250.h"
+#include "../../../src/MPU9250_registers.h"
+#include "../../../src/MPU9250_register_masks.h"
 
 #include <Point3D_Print.h>
 
