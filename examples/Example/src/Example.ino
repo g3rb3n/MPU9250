@@ -1,13 +1,15 @@
 #include <Arduino.h>
 
-#include "../../../src/MPU9250.h"
-
+#include <I2C.h>
+#include <Point3D.h>
 #include <Point3D_Print.h>
+
+#include "MPU9250.h"
+
 
 using namespace g3rb3n;
 
-MPU9250 mpu;
-
+MPU9250 mpu(0x68, D2, D1);
 
 bool sample()
 {
@@ -52,9 +54,9 @@ void debugSettings()
   Serial.print(' ');
   Serial.println(mpu.sampleRateDivider());
   Serial.print("GyroFrequency:          ");
-  Serial.println(mpu.gyroFrequency());
+  Serial.println(mpu.gyroscopeFrequency());
   Serial.print("AccelFrequency:         ");
-  Serial.println(mpu.accelFrequency());
+  Serial.println(mpu.accelometerFrequency());
   Serial.print("FifoMode:               ");
   Serial.println(mpu.fifoMode());
   Serial.print("ClockSource:            ");
