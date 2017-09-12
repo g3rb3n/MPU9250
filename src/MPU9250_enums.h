@@ -123,7 +123,7 @@ enum FifoMode
 };
 
 enum ExtSyncSet{
-  DISABLED = 0,
+  MPU_DISABLED = 0,
   TEMP_OUT_L,
   GYRO_XOUT_L,
   GYRO_YOUT_L,
