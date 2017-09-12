@@ -161,6 +161,7 @@ namespace g3rb3n
     void setFsync(ExtSyncSet s);
     void configureInterrupts();
     void setAccelOnlyLowPowerMode();
+    void wakeOnMotion(uint8_t threshold);
 
     void enableAccelometerSelfTest() const;
     void enableGyroscopeSelfTest() const;

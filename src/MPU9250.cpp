@@ -52,6 +52,31 @@ bool MPU9250::isReset() const
   return !i2c.readMaskBit(MPU9250_PWR_MGMT_1, MPU9250_MASK_H_RESET);  
 }
 
+void MPU9250::wakeOnMotion(uint8_t threshold)
+{
+  i2c.writeMaskClear(MPU9250_PWR_MGMT_1, MPU9250_MASK_CYCLE);
+  i2c.writeMaskClear(MPU9250_PWR_MGMT_1, MPU9250_MASK_SLEEP);
+  i2c.writeMaskClear(MPU9250_PWR_MGMT_1, MPU9250_MASK_GYRO_STANDBY);
+  i2c.writeMaskClear(MPU9250_PWR_MGMT_2, MPU9250_MASK_DISABLE_XG);
+  i2c.writeMaskClear(MPU9250_PWR_MGMT_2, MPU9250_MASK_DISABLE_YG);
+  i2c.writeMaskClear(MPU9250_PWR_MGMT_2, MPU9250_MASK_DISABLE_ZG);
+
+  i2c.writeMaskShiftValue(MPU9250_ACCEL_CONFIG2, MPU9250_MASK_ACCEL_FCHOICE_B, MPU9250_SHIFT_ACCEL_FCHOICE_B, 1);
+  i2c.writeMaskShiftValue(MPU9250_ACCEL_CONFIG2, MPU9250_MASK_A_DLPF_CFG, MPU9250_SHIFT_A_DLPF_CFG, 1);
+
+  i2c.writeMaskClearSet(MPU9250_INT_ENABLE, MPU9250_MASK_WOM_EN);
+  
+  i2c.writeMaskSet(MPU9250_MOT_DETECT_CTRL, MPU9250_MASK_ACCEL_INTEL_EN);
+  i2c.writeMaskSet(MPU9250_MOT_DETECT_CTRL, MPU9250_MASK_ACCEL_INTEL_MODE);
+
+  i2c.writeMaskSet(MPU9250_WOM_THR, threshold);
+  
+  i2c.writeMaskShiftValue(MPU9250_LP_ACCEL_ODR, MPU9250_MASK_LPOSC_CLKSEL, 0, 1);
+  
+  i2c.writeMaskSet(MPU9250_PWR_MGMT_1, MPU9250_MASK_CYCLE);
+
+}
+
 void MPU9250::setAccelOnlyLowPowerMode()
 {
   i2c.writeMaskClearSet(MPU9250_PWR_MGMT_1, MPU9250_MASK_CYCLE);
@@ -1545,7 +1570,7 @@ void MPU9250::selfTest2(Point3D<float>& accelerationFactor, Point3D<float>& gyro
   setSampleRateDividerMode(RATE_DIVIDER_0);
   //  i2c.writeByte(MPU9250_CONFIG, 0x02);        // Set FIFO replace, disable FSYNC, set DLPF to 92 Hz
   setFifoMode(FM_OVERWRITE);
-  setFsync(DISABLED);
+  setFsync(MPU_DISABLED);
   setLowPassRate(LPR_92);
   //set gyro sample rate to 1 kHz and 
   //i2c.writeByte(MPU9250_GYRO_CONFIG, FS<<3);  // Set full scale range for the gyro to 250 dps
