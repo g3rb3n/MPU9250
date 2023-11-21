@@ -117,6 +117,7 @@ float MPU9250::gyroInternalFrequency() const
     case GIF_8K: return 8000;
     case GIF_1K: return 1000;
   }
+  return 0;
 }
 
 
@@ -793,6 +794,7 @@ uint8_t MPU9250::sampleRateDivider() const
     case RATE_DIVIDER_6: return 7;
     case RATE_DIVIDER_7: return 8;    
   }
+  return 0;
 }
 
 void MPU9250::enableGyroX()
