@@ -1,8 +1,8 @@
 #include <Arduino.h>
 
-#include "../../../src/MPU9250.h"
-#include "../../../src/MPU9250_registers.h"
-#include "../../../src/MPU9250_register_masks.h"
+#include "MPU9250.h"
+#include "MPU9250_registers.h"
+#include "MPU9250_register_masks.h"
 
 #include <Point3D_Print.h>
 
@@ -30,14 +30,15 @@ Point3D<int16_t> samples[SAMPLES];
 uint16_t n_samples = SAMPLES;
 uint16_t n_samples_fifo = SAMPLES;
 uint16_t n_samples_reg = SAMPLES;
-bool configure(bool ae, bool ge, bool te, AccelFrequency af, GyroFrequency gf, SampleRateDivider srd)
+bool configure(bool ae, bool ge, bool te, AccelometerFrequency af, GyroscopeFrequency gf, SampleRateDivider srd)
 {
   mpu.setAccelometerEnabled(ae);
   mpu.setGyroscopeEnabled(ge);
 //  mpu.setThermometerEnabled(te);
-  mpu.setAccelFrequencyMode(af);
+  mpu.setAccelometerFrequencyMode(af);
   mpu.setGyroscopeFrequencyMode(gf);
   mpu.setSampleRateDividerMode(srd);
+  return true;
 }
 
 
@@ -106,7 +107,7 @@ void debugSettings()
   Serial.print("Gyroscope DOR:           ");
   Serial.print(mpu.gyroscopeDataOutputRate());
   Serial.println();
-  Serial.print("GyroFrequency:           ");
+  Serial.print("GyroscopeFrequency:           ");
   Serial.print(mpu.gyroscopeFrequency());
   Serial.println();
   Serial.print("Accelometer IF:          ");
@@ -114,8 +115,8 @@ void debugSettings()
   Serial.print(' ');
   Serial.print(mpu.accelometerInternalFrequency());
   Serial.println();
-  Serial.print("AccelFrequency:          ");
-  Serial.print(mpu.accelFrequency());
+  Serial.print("AccelometerFrequency:          ");
+  Serial.print(mpu.accelometerFrequency());
   Serial.println();
   Serial.print("Accelometer FCHOICE:     ");
   Serial.print(mpu.accelometerFrequencyChoice());
@@ -301,7 +302,7 @@ void iterateAccelometerFchoiceAndDlpf()
   {
     mpu.setReg(0x1d, 0x0f, 0, i);
     Serial.print("Accelometer only @ ");
-    Serial.print(mpu.accelFrequency());
+    Serial.print(mpu.accelometerFrequency());
     Serial.print(" / ");
     Serial.print(mpu.sampleRateDivider());
     Serial.print(" reg ");

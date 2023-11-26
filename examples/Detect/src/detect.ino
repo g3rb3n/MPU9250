@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "../../../src/MPU9250.h"
+#include "MPU9250.h"
 
 #include <Point3D_Print.h>
 
